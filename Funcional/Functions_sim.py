@@ -237,6 +237,41 @@ def plot_metrics_vs_time(data_list, time_steps, title, ylabel):
     plt.show()
 
 
+def calculate_smooth_derivative(data_list, time_list, window_size=50):
+    """
+    Calculate the derivative of a data list with respect to time and apply a moving average for smoothing.
+    Parameters:
+    data_list (list): List of data points.
+    time_list (list): List of corresponding time points.
+    window_size (int): Size of the moving average window for smoothing.
+    Returns:
+    tuple: A tuple containing two lists - the adjusted time points and the smoothed derivative values
+    """
+    # Calculate raw derivative
+    raw_rates = []
+    
+    for i in range(1, len(data_list)):
+        delta_y = data_list[i] - data_list[i-1]
+        delta_x = time_list[i] - time_list[i-1]
+        rate = 0 if delta_x == 0 else delta_y / delta_x
+        raw_rates.append(rate)
+    
+    # Apply moving average for smoothing
+    smoothed_rates = []
+    if len(raw_rates) < window_size:
+        
+        return time_list[1:], raw_rates
+    
+    for i in range(len(raw_rates) - window_size + 1):
+        window = raw_rates[i : i + window_size]
+        avg = sum(window) / window_size
+        smoothed_rates.append(avg)
+    # Adjust time list to match smoothed rates    
+    derivative_time = time_list[1:]
+    adjusted_time = derivative_time[:len(smoothed_rates)]
+    
+    return adjusted_time, smoothed_rates
+
 def calculate_derivative(data_list, time_list):
     """
     Calculate the rate of change (derivative) of data_list with respect to time_list.
@@ -263,6 +298,27 @@ def calculate_derivative(data_list, time_list):
     return rates
 
 def cycle_simulation(Time_Units, grid, active_cell_set, N_active, total_cells_in_grid, P_base, RESISTANCE_SCORE, P_clean, P_damage, P_necro_dead, plot, plot_interval, densidad_global, celulas_activas, time_step_list):
+    """
+    Run the cancer cell simulation for a specified number of time units.
+    Parameters:
+    Time_Units (int): Number of time units to simulate.
+    grid (list of list): The grid representing the environment.
+    active_cell_set (set): Set of tuples representing the coordinates of active cells.
+    N_active (int): Number of active cells.
+    total_cells_in_grid (int): Total number of cells in the grid.
+    P_base (dict): Dictionary containing base probabilities for 'dead', 'migrate', 'reproduce', and 'stay'.
+    RESISTANCE_SCORE (float): Resistance score affecting cell behavior.
+    P_clean (float): Probability of necrotic cell being cleaned.
+    P_damage (float): Probability of necrotic cell damaging neighboring cells.
+    P_necro_dead (float): Probability of a neighboring cell becoming necrotic or dead.
+    plot (bool): Whether to plot the grid at intervals.
+    plot_interval (int): Interval at which to plot the grid.
+    densidad_global (list): List to store global density values over time.
+    celulas_activas (list): List to store active cell counts over time.
+    time_step_list (list): List to store time steps.
+    Returns:
+    None
+    """
 
     for t in range(Time_Units):
 
