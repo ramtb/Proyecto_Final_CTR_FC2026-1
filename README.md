@@ -146,8 +146,6 @@ El código genera cuatro tipos de salidas visuales:
 
     git clone https://github.com/tu-usuario/simulacion-tumor-montecarlo.git
 
-    cd simulacion-tumor-montecarlo
-
     ```
 
 
@@ -166,7 +164,15 @@ El código genera cuatro tipos de salidas visuales:
 
 3.  Ejecutar la simulación en el documento Simulation.ipynb dentro de la carpeta Funcional.
 
+-----
 
+## 🛠️ Código Adicionales
+
+1.  **Aproximación matemática:** El cual permite observar el fenomeno con operaciones mátematicas, siguiendo la función de Gompertz.
+
+
+
+2.  **Obtención de la probabilidad:** El cual permite obtener los valores para las probabilidades que se utilizan durante la simulación.
 
 -----
 
